@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { CabinLayout } from '../model/cabin-layout';
+import {CabinLayout} from "../domain/cabin-layout/cabin-layout";
 
 export class CabinLayoutsDAL {
     private pool: Pool;
@@ -11,7 +11,7 @@ export class CabinLayoutsDAL {
     async createCabinLayout(cabinLayout: CabinLayout): Promise<CabinLayout> {
         const query = `INSERT INTO fleetops.cabin_layouts (layout_id, layout_data)
                        VALUES ($1, $2)`;
-        await this.pool.query(query, [cabinLayout.layoutId, JSON.stringify(cabinLayout)]);
+        await this.pool.query(query, [cabinLayout.cabinLayoutId, JSON.stringify(cabinLayout)]);
         return cabinLayout
     }
 
@@ -21,7 +21,7 @@ export class CabinLayoutsDAL {
         return res.rows.map(row => this.map(row.layout_data, row.__version));
     }
 
-    async getCabinLayoutById(cabinLayoutId: string): Promise<CabinLayout | null> {
+    async load(cabinLayoutId: string): Promise<CabinLayout | null> {
         const query = `SELECT layout_data, __version FROM fleetops.cabin_layouts WHERE layout_id = $1`;
         const res = await this.pool.query(query, [cabinLayoutId]);
 
@@ -38,7 +38,7 @@ export class CabinLayoutsDAL {
 
         const data = JSON.stringify(cabinLayout);
         const expectedVersion = cabinLayout.version;
-        const id = cabinLayout.layoutId;
+        const id = cabinLayout.cabinLayoutId;
 
         const rows = await this.pool.query(query, [data, id, expectedVersion.toString()]);
         if (rows.rowCount === 0) {
@@ -50,7 +50,7 @@ export class CabinLayoutsDAL {
 
     async deleteCabinLayout(cabinLayout: CabinLayout): Promise<void> {
         const query = `DELETE FROM fleetops.cabin_layouts WHERE layout_id = $1`;
-        await this.pool.query(query, [cabinLayout.layoutId]);
+        await this.pool.query(query, [cabinLayout.cabinLayoutId]);
     }
 
     private map(unitData: any, version: number): CabinLayout {
@@ -58,4 +58,9 @@ export class CabinLayoutsDAL {
         result.version = version;
         return result
     }
+
+    async sendUnpublishedEvents() {
+
+    }
+
 }
