@@ -1,9 +1,11 @@
 import { CabinLayout } from '../domain/cabin-layout/cabin-layout';
 
 import { IWorldOptions, World, setWorldConstructor } from '@cucumber/cucumber'
+import {Flight} from "../domain/flight/flight";
 
 export interface ICustomWorld extends World {
-	flight?: CabinLayout
+	flight?: Flight
+	cabinLayout?: CabinLayout
 	now: Date
     sharedData: { [key: string]: any };
 }

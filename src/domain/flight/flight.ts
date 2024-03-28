@@ -5,8 +5,12 @@ import {FlightDomainEvent} from "./domain-events";
 import {FlightStatus} from "./flight-status";
 import {DomainEventType} from "../core/domain-events";
 import {SeatMap} from "./seat-map";
+import e from "express";
 
 export class Flight {
+    get status(): FlightStatus | null {
+        return this._status;
+    }
     get seatMap(): SeatMap | null {
         return this._seatMap;
     }

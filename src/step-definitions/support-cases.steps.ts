@@ -11,8 +11,7 @@ import {CabinLayoutDomainEvent} from "../domain/cabin-layout/domain-events";
 import {CabinLayoutStatus} from "../domain/cabin-layout/cabin-layout-status";
 
 Given('a draft new cabinLayout', function (this: ICustomWorld) {
-    let cabinLayout = createCabinLayout(this.now);
-    this.flight = cabinLayout;
+    this.cabinLayout = createCabinLayout(this.now);
 });
 
 

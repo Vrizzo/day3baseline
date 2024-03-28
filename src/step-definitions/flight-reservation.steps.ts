@@ -5,26 +5,25 @@ import {DomainEventType} from "../domain/core/domain-events";
 
 import {CommandType} from '../domain/core/commands';
 import {CabinLayout} from "../domain/cabin-layout/cabin-layout";
-import {CabinLayoutDomainEvent} from "../domain/cabin-layout/domain-events";
 import {InitFlightMap} from "../domain/flight/commands";
 import {Flight} from "../domain/flight/flight";
 import {FlightStatus} from "../domain/flight/flight-status";
+import {FlightDomainEvent} from "../domain/flight/domain-events";
 
 
 Given(/^a draft new flight$/, function () {
-    let flight = createFlight(this.now);
-    this.flight = flight;
+    this.flight = createFlight(this.now);
 });
 Then('a flight draft is initialized', async function () {
-    assertDomainEventExists(this.cabinLayout, DomainEventType.FlightCreated);
+    assertDomainEventExists(this.flight, DomainEventType.FlightCreated);
 });
 Then('a flight is in status draft', async function () {
     assertStatus(this.flight, FlightStatus.Draft);
 });
 
-function assertDomainEventExists(cabinLayout: CabinLayout, type: DomainEventType) {
+function assertDomainEventExists(flight: Flight, type: DomainEventType) {
 
-    const domainEvent = cabinLayout.getDomainEvents.find((e: CabinLayoutDomainEvent) => {
+    const domainEvent = flight.getDomainEvents.find((e: FlightDomainEvent) => {
             console.log(e)
             return e.type === type
         }
@@ -34,8 +33,8 @@ function assertDomainEventExists(cabinLayout: CabinLayout, type: DomainEventType
     assert(domainEvent !== undefined, `Domain event of type ${type} not found`);
 }
 
-function assertStatus(cabinLayout: CabinLayout, expectedStatus: string) {
-    assert(cabinLayout.status === expectedStatus, `Status is not ${expectedStatus}`);
+function assertStatus(flight: Flight, expectedStatus: string) {
+    assert(flight.status === expectedStatus, `Status is not ${expectedStatus}`);
 
 }
 
