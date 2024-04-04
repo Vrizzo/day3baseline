@@ -2,9 +2,7 @@ import {Given, Then} from '@cucumber/cucumber';
 import assert from 'assert';
 
 import {DomainEventType} from "../domain/core/domain-events";
-
 import {CommandType} from '../domain/core/commands';
-import {CabinLayout} from "../domain/cabin-layout/cabin-layout";
 import {InitFlightMap} from "../domain/flight/commands";
 import {Flight} from "../domain/flight/flight";
 import {FlightStatus} from "../domain/flight/flight-status";
